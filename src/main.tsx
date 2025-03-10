@@ -12,9 +12,9 @@ import '@beda.software/emr/dist/style.css';
 
 // You can specify your own theme to ajdust color,
 // Use you https://github.com/beda-software/fhir-emr/blob/master/src/theme/ThemeProvider.tsx as example
-import { App } from '@beda.software/emr/containers';
 import { ThemeProvider } from '@beda.software/emr/theme';
 
+import { App } from './containers/App';
 import { dynamicActivate, getCurrentLocale } from './services/i18n';
 
 export const AppWithContext = () => {
