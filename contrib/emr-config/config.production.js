@@ -1,19 +1,22 @@
 const config = {
-    clientId: 'web',
+    clientId: window.localStorage.getItem('ClientId') || 'web',
+    authTokenPath: window.localStorage.getItem('auth_token_path') || 'auth/token',
+    authClientRedirectURL: window.localStorage.getItem('auth_client_redirect_url') || 'https://aidbox.emr.beda.software/auth-aidbox',
 
     wearablesAccessConsentCodingSystem: 'https://fhir.emr.beda.software/CodeSystem/consent-subject',
 
     tier: 'production',
-    baseURL: 'https://aidbox.emr.beda.software',
+    baseURL: window.localStorage.getItem('baseURL') || 'https://aidbox.emr.beda.software',
+    fhirBaseURL: window.localStorage.getItem('fhirBaseURL') || 'https://aidbox.emr.beda.software/fhir',
     sdcIdeUrl: 'https://sdc.beda.software',
     aiQuestionnaireBuilderUrl: 'https://builder.emr.beda.software',
 
     sdcBackendUrl: null,
     webSentryDSN: null,
     mobileSentryDSN: null,
-    jitsiMeetServer: 'video.emr.beda.software/',
-    wearablesDataStreamService: 'https://ingest.emr.beda.software/api/v1',
-    metriportIdentifierSystem: 'https://api.sandbox.metriport.com',
+    jitsiMeetServer: null,
+    wearablesDataStreamService: null,
+    metriportIdentifierSystem: null,
     aiAssistantServiceUrl: 'https://scribe.emr.beda.software',
 };
 
