@@ -19,8 +19,7 @@
         "contrib/*"
     ],
     "dependencies": {
-        "@beda.software/emr": "*",
-        "sdc-qrf": "https://gitpkg.vercel.app/beda-software/sdc-ide/sdc-qrf?master"
+        "@beda.software/emr": "*"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^1.6.1",
