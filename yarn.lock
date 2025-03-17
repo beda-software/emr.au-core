@@ -14460,10 +14460,10 @@ scroll-into-view-if-needed@^3.0.3:
   dependencies:
     compute-scroll-into-view "^3.0.2"
 
-sdc-qrf@^0.3.13:
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/sdc-qrf/-/sdc-qrf-0.3.13.tgz#632a452810f5d8967cc12537746da419b54d93db"
-  integrity sha512-tls2j+PtTmf3vR8a/uFBavySgIFmIKdKSqNNjcDZribvwRMVr/CLhQoie41XQTaAzil/+S+bcdKeY48tbRDu8A==
+sdc-qrf@^0.3.15:
+  version "0.3.15"
+  resolved "https://registry.yarnpkg.com/sdc-qrf/-/sdc-qrf-0.3.15.tgz#b674953be4264c11c11dad5c0bf889c26f3dfbc1"
+  integrity sha512-SbGWjpWS0qH3ePBLmJGtLNZlhq5fF0/V8dNuNBH1CmyZwZgFrHe6ZTsqgPkEdLidXCABXlrAnMRp3NTm/Y0c0w==
   dependencies:
     classnames "^2.3.1"
     fhirpath "^3.5.0"
