@@ -1636,24 +1636,23 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@beda.software/fhir-react@^1.8.8":
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/@beda.software/fhir-react/-/fhir-react-1.8.8.tgz#7368cd3b52b9c9bc6a1ea895e1dfe02d3732ba0f"
-  integrity sha512-3bOh4yboxMHGbxGzTQ1naL0uXswH3FFh5NTRUUIiC8bcdP17Ji4QkbvSBBtV85O8e/qJ7++fKEBNGOnt7tZ7sQ==
+"@beda.software/fhir-react@^1.8.9":
+  version "1.8.9"
+  resolved "https://registry.yarnpkg.com/@beda.software/fhir-react/-/fhir-react-1.8.9.tgz#1b1bcf90800853ffbdc0ffa07f6b5629e0b333c0"
+  integrity sha512-brrfkUXDWS+JFYDWMaihD5PK9SjS1ILq2ETIl6iB16KJ8Db+YaAmZAXQGh7knZvkkT53lMZK109uojxqZMee7Q==
   dependencies:
-    "@beda.software/remote-data" "^1.1.3"
-    axios "^1.6.2"
+    "@beda.software/remote-data" "^1.1.4"
     lodash "^4.17.21"
     moment "^2.29.1"
   optionalDependencies:
     lint-staged "^15.2.0"
 
-"@beda.software/remote-data@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@beda.software/remote-data/-/remote-data-1.1.3.tgz#edd1194a65796fdffcf45235ff0d9463547d8c29"
-  integrity sha512-HlyAELvpRv1xsoXUFeOnpUxSS+jrZ+zRu3bN7yGi2CD+Py5MzIjm3dy+MD41ZvpoFGlF/0IplIb8RXBm/vzHIg==
+"@beda.software/remote-data@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@beda.software/remote-data/-/remote-data-1.1.4.tgz#eeafbc4f380868e86a5194f3ef1c16779112195e"
+  integrity sha512-EICOc7TeQOL0wlkEvCePjzLVFTG1IDkIyc+qCTWN3rHr/mplFLaTpjWW/2ND+oJ3AW4qw1+GiYgC/MOlCyL6Cg==
   dependencies:
-    axios "^1.6.2"
+    axios "^1.8.4"
 
 "@beda.software/vite-plugin-dts@4.0.0-beta.1":
   version "4.0.0-beta.1"
@@ -6581,13 +6580,13 @@ aidbox-forms@^0.0.5:
   resolved "https://registry.yarnpkg.com/aidbox-forms/-/aidbox-forms-0.0.5.tgz#8f6e62a75b40903eeceaa45c7339eaa3f5bba4a9"
   integrity sha512-n96UKOQVff2Y/WPw3+n0S6O4jel3lGRpw7z1aBLn0mQv7EQxq2gDSIorpxNCywW/QZqFBLEyzZ0lZjcGvo4SKA==
 
-aidbox-react@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/aidbox-react/-/aidbox-react-1.10.0.tgz#315c202bbc5c55d6bcac3f45ba79fdc9cec1691d"
-  integrity sha512-u76vaTCh/P1fLnP8r+4R3NRYsnWNzXp3csvATZvp3ct8bKV0kcof5kvCk5Phae7aJUPU1J//iBAnVweKq91b/A==
+aidbox-react@^1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/aidbox-react/-/aidbox-react-1.10.1.tgz#cc12df9278f95402210f4a9644493ecdfe69c292"
+  integrity sha512-mEZS2uN8btp828LIf9CfM8cPKTHNTSl8O2Q1TgY1qGx0l97FNPkcHiombZIRgkLOYdAXEe2KRu5jFRcGWZk2dg==
   dependencies:
-    "@beda.software/remote-data" "^1.1.3"
-    axios "^1.6.2"
+    "@beda.software/remote-data" "^1.1.4"
+    axios "^1.8.4"
     moment "^2.29.1"
 
 ajv-draft-04@~1.0.0:
@@ -6974,10 +6973,10 @@ axios@^1.6.1:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
-axios@^1.6.2:
-  version "1.6.8"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
-  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+axios@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.8.4.tgz#78990bb4bc63d2cae072952d374835950a82f447"
+  integrity sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -7460,7 +7459,7 @@ cjs-module-lexer@^1.0.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
   integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
 
-classnames@*, classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1, classnames@^2.3.2:
+classnames@*, classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1, classnames@^2.3.2, classnames@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
@@ -9319,21 +9318,10 @@ fhir@^4.10.3:
     randomatic "^3.1.0"
     xml-js "^1.6.8"
 
-fhirpath@3.17.1:
-  version "3.17.1"
-  resolved "https://registry.yarnpkg.com/fhirpath/-/fhirpath-3.17.1.tgz#b3a27e064c294aa8f4be0c1ccbcafe86a77fb466"
-  integrity sha512-7oiyEOKLrxanY9WBIr3ICbQFAGOmfjzYam8IFfxuX6c/lwdIb1UppxLIC10lVFTMpzJgxjNtqk2YbSxXROmVdQ==
-  dependencies:
-    "@lhncbc/ucum-lhc" "^5.0.0"
-    antlr4 "~4.9.3"
-    commander "^2.18.0"
-    date-fns "^1.30.1"
-    js-yaml "^3.13.1"
-
-fhirpath@^3.5.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/fhirpath/-/fhirpath-3.13.0.tgz#20d6af28287a5a91cd0589a6415753b138f443d3"
-  integrity sha512-6vGiPbnj/C/zGfrCTMikaiD8qTje2yEvSdo4zSbluyIT+QNV3x8Ib+WfvH7ERoU4RGKNO/INZ4JXkmIO2gGSqw==
+fhirpath@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/fhirpath/-/fhirpath-3.18.0.tgz#990d4d02ffe8fc5a74f3d6fbf4fe008904a55009"
+  integrity sha512-iZ876rFWhozQLO/hTgFoEH9t9r1WHJqd4tRH6Gg/FiB6zliyK+bL7xKO5CzgkWBpvvBWe4sqe60tC+8opR0d0Q==
   dependencies:
     "@lhncbc/ucum-lhc" "^5.0.0"
     antlr4 "~4.9.3"
@@ -14460,16 +14448,16 @@ scroll-into-view-if-needed@^3.0.3:
   dependencies:
     compute-scroll-into-view "^3.0.2"
 
-sdc-qrf@^0.3.16:
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/sdc-qrf/-/sdc-qrf-0.3.16.tgz#25a9f3302d97b5c26c53d9dc9b88d648a6398de9"
-  integrity sha512-mni7/Xn/gGvM4wzPHWMyVVUZFliLK6mYX+GH8GJckwNXK3w6JEk8sPkVqLN1fSK4iWz2CCv9kVEniShZMv0/+Q==
+sdc-qrf@^0.3.19:
+  version "0.3.21"
+  resolved "https://registry.yarnpkg.com/sdc-qrf/-/sdc-qrf-0.3.21.tgz#16bc42adb08d0af2d73952d2f2f43dd6d4fdd9ae"
+  integrity sha512-YPZGfHdlqEM78TVDirTK0XdOOOMrbWiG1UcgeiahmbqiFRpxm9Rf3mtYbj6Q3KayIcy8hqav2FXLM7Lu1IIx3g==
   dependencies:
-    classnames "^2.3.1"
-    fhirpath "^3.5.0"
-    lodash "^4.17.15"
+    classnames "^2.5.1"
+    fhirpath "^3.18.0"
+    lodash "^4.17.21"
     query-string "^7.1.1"
-    tslib "^2.4.0"
+    uuid "^11.1.0"
 
 semver@^5.6.0:
   version "5.7.2"
@@ -15336,7 +15324,7 @@ tsconfig-paths@^4.2.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@2.6.2, tslib@^2.0.0, tslib@^2.0.1, tslib@^2.1.0, tslib@^2.4.0:
+tslib@2.6.2, tslib@^2.0.0, tslib@^2.0.1, tslib@^2.1.0:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
@@ -15752,6 +15740,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
+
+uuid@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.1.0.tgz#9549028be1753bb934fc96e2bca09bb4105ae912"
+  integrity sha512-0/A9rDy9P7cJ+8w1c9WD9V//9Wj15Ce2MPz8Ri6032usz+NfePxx5AcN3bN+r6ZL6jEo066/yNYB3tn4pQEx+A==
 
 uuid@^8.3.2:
   version "8.3.2"
