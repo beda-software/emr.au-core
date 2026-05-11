@@ -76,6 +76,14 @@ if (config.baseURL === tierConfigMap[AuthProvider.SmartOnFhirAidbox].develop.bas
     });
 }
 
+if (config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl) {
+    tabs.push({
+        path: 'smart',
+        label: 'Smart Apps',
+        component: ({ resource }) => <PatientApps patient={resource} />,
+    });
+}
+
 export function PatientDetails() {
     const isEpic = config.baseURL === tierConfigMap[AuthProvider.Epic].develop.baseUrl;
     const isOrionHealth = config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl;
