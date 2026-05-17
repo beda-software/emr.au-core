@@ -85,6 +85,14 @@ export function useSignIn(props: SignInProps) {
             window.localStorage.setItem('token', 'token');
             window.location.href = '/patients';
             return;
+        } else if ([
+            AuthProvider.MeditechEU,
+            AuthProvider.EpicEU,
+            AuthProvider.Nuvyta,
+        ].indexOf(activeAuthProvider) != -1) {
+            window.localStorage.setItem('token', localStorage['presavedToken'])
+            window.location.href = '/patients';
+            return;
         }
         const authState: OAuthState | undefined = props.originPathName ? { nextUrl: props.originPathName } : undefined;
 

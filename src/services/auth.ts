@@ -15,7 +15,11 @@ export enum AuthProvider {
     Sparked = 'sparked',
     DigitalHealth = 'digital-health',
     Epic = 'epic',
-    OrionHealth = 'orion-health'
+    OrionHealth = 'orion-health',
+    EpicEU = 'epic-eu',
+    MeditechEU = 'meditech-eu',
+    Nuvyta = 'Nuvyta',
+
 }
 
 export type Tier = 'develop' | 'production';
@@ -41,7 +45,7 @@ export interface AuthClientConfigParams {
     tokenPath: string;
     responseType: 'code' | 'token';
     redirectURL: string;
-    grantType: 'implicit' | 'authorization_code';
+    grantType: 'implicit' | 'authorization_code' | 'client_credentials';
     scope?: string[];
     tabTitle: string;
     message: string;
@@ -207,6 +211,36 @@ export const tierConfigMap: { [key in AuthProvider]: TierConfig } = {
             baseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
             fhirBaseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
         },
+    },
+    [AuthProvider.EpicEU]: {
+        develop: {
+            baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
+            fhirBaseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
+        },
+        production: {
+            baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
+            fhirBaseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
+        }
+    },
+    [AuthProvider.MeditechEU]: {
+        develop: {
+            baseUrl: "https://dev-mtx-interop.meditech.com/",
+            fhirBaseUrl: "https://dev-mtx-interop.meditech.com/v2/uscore/STU6",
+        },
+        production: {
+            baseUrl: "https://dev-mtx-interop.meditech.com/v2/uscore/STU6",
+            fhirBaseUrl: "https://dev-mtx-interop.meditech.com/v2/uscore/STU6",
+        }
+    },
+    [AuthProvider.Nuvyta]: {
+        develop: {
+            baseUrl: "https://identity.global.nuvyta.cloud/",
+            fhirBaseUrl: "https://test.demo.global.nuvyta.cloud/fhir/fhir",
+        },
+        production: {
+            baseUrl: "https://test.demo.global.nuvyta.cloud/fhir/fhir",
+            fhirBaseUrl: "https://test.demo.global.nuvyta.cloud/fhir/fhir",
+        }
     },
 };
 
@@ -402,6 +436,37 @@ export const authClientConfigMap: { [key in AuthProvider]: AuthClientConfigParam
         tabTitle: 'Orion Health',
         message: 'No authorization required',
     },
+    [AuthProvider.EpicEU]: {
+        clientId: "EPIC-EU",
+        authPath: '',
+        tokenPath: '',
+        responseType: 'code',
+        redirectURL: '',
+        grantType: 'authorization_code',
+        message: 'Provide your token here',
+        tabTitle: "EPIC EU",
+    },
+    [AuthProvider.MeditechEU]: {
+        clientId: "ips-testing@d390d8d8fcea406798ca241c6ffaf79e",
+        // clientSecret: 'wwRayAsdT0ipsauCE8_ncQ==',
+        authPath: '',
+        tokenPath: '/oauth/token',
+        responseType: 'code',
+        redirectURL: '',
+        grantType: 'client_credentials',
+        message: 'Provide your token here',
+        tabTitle: "Meditech EU",
+    },
+    [AuthProvider.Nuvyta]: {
+        clientId: "fhir-api.client",
+        authPath: '',
+        tokenPath: '/realms/demo/protocol/openid-connect/token',
+        responseType: 'code',
+        redirectURL: '',
+        grantType: 'authorization_code',
+        message: 'Provide your token here',
+        tabTitle: "Nuvyta",
+    }
 };
 
 export function saveAuthProviderToStorage(value: AuthProvider) {

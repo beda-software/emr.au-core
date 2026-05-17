@@ -101,4 +101,7 @@ export const clientSharedUserInitService: { [key in AuthProvider]: SharedUserIni
     [AuthProvider.DigitalHealth]: mockUserInfoSharedState('example-healthconnect-practitioner-1'),
     [AuthProvider.Epic]: mockUserInfoSharedState('e-.Lo31-.yLLfMmz0ylcV7A3'),
     [AuthProvider.OrionHealth]: mockUserInfoSharedState('orion-health'),
+    [AuthProvider.EpicEU]: mockUserInfoSharedState('epic-eu'),
+    [AuthProvider.MeditechEU]: mockUserInfoSharedState('meditech-eu'),
+    [AuthProvider.Nuvyta]: mockUserInfoSharedState('nuvyta'),
 };

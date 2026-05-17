@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Input } from 'antd';
 import { useCallback, useMemo } from 'react';
 import { SingleValue } from 'react-select';
 
@@ -98,8 +98,17 @@ function ProvidersSelect(props: ProvidersSelectProps) {
     );
 }
 
+function persistToken(token:string){
+    localStorage.setItem('presavedToken', token)
+}
+
 export function SignIn(props: SignInProps) {
     const { activeAuthProvider, authorize, setAuthProvider, authClientConfig } = useSignIn(props);
+    const saveTokenInput = [
+            AuthProvider.MeditechEU,
+            AuthProvider.EpicEU,
+            AuthProvider.Nuvyta,
+        ].indexOf(activeAuthProvider) != -1;
 
     return (
         <S.Container>
@@ -117,6 +126,7 @@ export function SignIn(props: SignInProps) {
                         <SharedCredentials sharedCredentials={authClientConfig.sharedCredentials} />
                     ) : null}
                 </S.Message>
+                {saveTokenInput ? <Input onChange={(e) => persistToken(e.target.value)} /> : undefined}
                 <Button type="primary" onClick={authorize} size="large">
                     {t`Log in`}
                 </Button>
