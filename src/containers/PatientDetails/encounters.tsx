@@ -85,6 +85,7 @@ export function PatientEncounter({ patient }: { patient: Patient }) {
                     value: bundle.total,
                 },
             ]}
+            defaultLaunchContext={[{"name": "Patient", resource: patient}]}
         />
     );
 }
