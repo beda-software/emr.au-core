@@ -1,4 +1,4 @@
-import { Patient } from 'fhir/r4b';
+import { Encounter, Patient } from 'fhir/r4b';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -174,7 +174,7 @@ function OrionHealthPatientDetails() {
     );
 }
 
-function Documents({ patient }: { patient: WithId<Patient> }) {
+export function Documents({ patient, encounter }: { patient: WithId<Patient>, encounter?: Encounter }) {
     const author = selectCurrentUserRoleResource();
     return (
         <Routes>
@@ -190,6 +190,10 @@ function Documents({ patient }: { patient: WithId<Patient> }) {
                             onSuccess={() => {
                                 window.history.back();
                             }}
+                            launchContextParameters={[
+                                {name: "encounter", resource: encounter },
+                                { name: "gpccmppractitionerrole", resource: {resourceType: "PractitionerRole"} },
+                            ]}
                         />
                     </S.PatientDocument>
                 }
