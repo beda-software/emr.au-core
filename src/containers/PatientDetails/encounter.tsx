@@ -35,7 +35,7 @@ if (config.baseURL === tierConfigMap[AuthProvider.SmartOnFhirAidbox].develop.bas
     tabs.push({
         path: 'smart',
         label: 'Smart Apps',
-        component: ({ resource, bundle }) => <PatientApps patient={getPatient(bundle)!} encounter={resource} />,
+        component: ({ resource, bundle }) => <PatientApps patient={getPatient(bundle)!} encounter={resource as Encounter} />,
     });
 }
 
