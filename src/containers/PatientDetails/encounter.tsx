@@ -58,6 +58,7 @@ export function EncounterPage() {
             })}
             getTitle={({ resource, bundle }) => getName(resource, bundle) ?? 'N/A'}
             tabs={tabs}
+            maxWidth="100%"
         />
     );
 }
