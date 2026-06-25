@@ -6,7 +6,7 @@ import { SingleValue } from 'react-select';
 import { Select } from '@beda.software/emr/components';
 
 import logo from 'src/images/logo.svg';
-import { authClientConfigMap, AuthProvider, type SharedCredentials } from 'src/services/auth';
+import { authClientConfigMap, authProvidersConfig, AuthProvider, type SharedCredentials } from 'src/services/auth';
 
 import { SignInProps, useSignIn } from './hooks';
 import s from './SignIn.module.scss';
@@ -104,11 +104,7 @@ function persistToken(token:string){
 
 export function SignIn(props: SignInProps) {
     const { activeAuthProvider, authorize, setAuthProvider, authClientConfig } = useSignIn(props);
-    const saveTokenInput = [
-            AuthProvider.MeditechEU,
-            AuthProvider.EpicEU,
-            AuthProvider.Nuvyta,
-        ].indexOf(activeAuthProvider) != -1;
+    const showTokenInput = authProvidersConfig[activeAuthProvider].signIn.type === 'presaved-token';
 
     return (
         <S.Container>
@@ -126,7 +122,7 @@ export function SignIn(props: SignInProps) {
                         <SharedCredentials sharedCredentials={authClientConfig.sharedCredentials} />
                     ) : null}
                 </S.Message>
-                {saveTokenInput ? <Input onChange={(e) => persistToken(e.target.value)} /> : undefined}
+                {showTokenInput ? <Input onChange={(e) => persistToken(e.target.value)} /> : undefined}
                 <Button type="primary" onClick={authorize} size="large">
                     {t`Log in`}
                 </Button>
