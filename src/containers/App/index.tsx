@@ -11,7 +11,7 @@ import {
 import { MenuLayout } from '@beda.software/emr/dist/components/BaseLayout/Sidebar/SidebarTop/context';
 import config from '@beda.software/emr-config';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth.ts';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { useApp } from './hooks';
 import { digitalHealthMenuLayout, menuLayout } from './layout';
@@ -24,9 +24,9 @@ import { SignIn } from '../SignIn';
 
 export function App() {
     const { sharedUserInitService, setAuthProvider } = useApp();
-    const isDigitalHealth = config.baseURL === tierConfigMap[AuthProvider.DigitalHealth].develop.baseUrl;
-    const isEpic = config.baseURL === tierConfigMap[AuthProvider.Epic].develop.baseUrl;
-    const isOrionHealth = config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl;
+    const isDigitalHealth = config.baseURL === authProvidersConfig[AuthProvider.DigitalHealth].baseUrl;
+    const isEpic = config.baseURL === authProvidersConfig[AuthProvider.Epic].baseUrl;
+    const isOrionHealth = config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl;
     const digitalHealthRoutes = (
         <>
             <Route path="/practitioners" element={<PractitionerList />} />

@@ -11,7 +11,7 @@ import {
 import config from '@beda.software/emr-config';
 import { failure, RemoteDataResult, success } from '@beda.software/remote-data';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth';
 
 export interface SmileIdTokenData extends JWTPayload {
     fhirUser: string; //e.g "null/Practitioner/<practitioner-id>"
@@ -36,7 +36,7 @@ const mockUserInfoSharedState = (practitionerId: string) => async (): Promise<Re
     };
     sharedAuthorizedUser.setSharedState(user);
 
-    if (config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl) {
+    if (config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl) {
         sharedAuthorizedPractitioner.setSharedState({ resourceType: 'Practitioner', id: practitionerId });
         sharedAuthorizedPractitionerRoles.setSharedState([]);
     } else {
@@ -85,23 +85,21 @@ export async function smileUserInfoSharedState(): Promise<RemoteDataResult<User>
 }
 
 export type SharedUserInitCallback = () => Promise<RemoteDataResult<User>>;
-export const clientSharedUserInitService: { [key in AuthProvider]: SharedUserInitCallback | undefined } = {
-    [AuthProvider.AuCoreAidbox]: aidboxPopulateUserInfoSharedState,
-    [AuthProvider.ErequestingAidbox]: aidboxPopulateUserInfoSharedState,
-    [AuthProvider.ErequestingSparked]: smileUserInfoSharedState,
-    [AuthProvider.SmartOnFhirAidbox]: aidboxPopulateUserInfoSharedState,
-    [AuthProvider.SparkedHAPI]: smileUserInfoSharedState,
-    [AuthProvider.BP]: mockUserInfoSharedState('15000000-0020-0000-0000-98a3489d6ffc'),
-    [AuthProvider.IRIS]: mockUserInfoSharedState('cardy-igist'),
-    [AuthProvider.MediRecords]: mockUserInfoSharedState('b82b3842-ba16-4b01-8c24-7b0deee9b660'),
-    [AuthProvider.ErequestingCallistemon]: mockUserInfoSharedState('1153'),
-    [AuthProvider.HaloConnect]: mockUserInfoSharedState('pr-1'),
-    [AuthProvider.MedtechGlobal]: mockUserInfoSharedState('pr-1'),
-    [AuthProvider.Sparked]: mockUserInfoSharedState('leishman-leesa'),
-    [AuthProvider.DigitalHealth]: mockUserInfoSharedState('example-healthconnect-practitioner-1'),
-    [AuthProvider.Epic]: mockUserInfoSharedState('e-.Lo31-.yLLfMmz0ylcV7A3'),
-    [AuthProvider.OrionHealth]: mockUserInfoSharedState('orion-health'),
-    [AuthProvider.EpicEU]: mockUserInfoSharedState('epic-eu'),
-    [AuthProvider.MeditechEU]: mockUserInfoSharedState('meditech-eu'),
-    [AuthProvider.Nuvyta]: mockUserInfoSharedState('nuvyta'),
-};
+
+function resolveUserInitService(userInit: (typeof authProvidersConfig)[AuthProvider]['userInit']): SharedUserInitCallback {
+    switch (userInit.type) {
+        case 'aidbox':
+            return aidboxPopulateUserInfoSharedState;
+        case 'smile':
+            return smileUserInfoSharedState;
+        case 'mock':
+            return mockUserInfoSharedState(userInit.practitionerId);
+    }
+}
+
+export const clientSharedUserInitService: { [key in AuthProvider]: SharedUserInitCallback } = Object.fromEntries(
+    Object.entries(authProvidersConfig).map(([provider, providerConfig]) => [
+        provider,
+        resolveUserInitService(providerConfig.userInit),
+    ]),
+) as { [key in AuthProvider]: SharedUserInitCallback };

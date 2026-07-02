@@ -4,7 +4,7 @@ import type { Dashboard, DashboardInstance, WidgetInfo } from '@beda.software/em
 import { StandardCardContainerFabric } from '@beda.software/emr/dist/containers/PatientDetails/PatientOverviewDynamic/containers/StandardCardContainerFabric/index';
 import config from '@beda.software/emr-config';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth.ts';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { DocRrefContainer } from './containers/DocRefContainer';
 import { SummaryContainer } from './containers/SummaryContainer';
@@ -22,70 +22,70 @@ import {
 
 const patientDashboardConfig: DashboardInstance = {
     top:
-        config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl
+        config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl
             ? [
                   {
                       widget: SummaryContainer,
                   },
               ]
             : [
-                  ...(config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl
                       ? [
                             {
                                 widget: DocRrefContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.BP].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.BP].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.HaloConnect].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.HaloConnect].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.MedtechGlobal].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.MedtechGlobal].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.MediRecords].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.MediRecords].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.Sparked].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.Sparked].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.DigitalHealth].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.DigitalHealth].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.Epic].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.Epic].baseUrl
                       ? [
                             {
                                 widget: SummaryContainer,
                             },
                         ]
                       : []),
-                  ...(config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl
+                  ...(config.baseURL === authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl
                       ? Array.of<WidgetInfo>({
                             widget: StandardCardContainerFabric(prepareComposition),
                             query: {
