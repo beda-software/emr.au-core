@@ -10,7 +10,7 @@ import { service } from '@beda.software/emr/services';
 import config from '@beda.software/emr-config';
 import { RenderRemoteData, useService } from '@beda.software/fhir-react';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth.ts';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { S as DocRefStyles } from '../DocRefContainer/DocRefContainer.styles';
 import { parsePatientSummary, ResourcFetchInfo } from '../DocRefContainer/utils';
@@ -42,7 +42,7 @@ export function SummaryContainer(props: ContainerProps) {
     const { patient } = props;
     let url = `Patient/${patient.id!}/$summary`;
 
-    if (config.baseURL === tierConfigMap[AuthProvider.HaloConnect].develop.baseUrl) {
+    if (config.baseURL === authProvidersConfig[AuthProvider.HaloConnect].baseUrl) {
         const identifiers = patient.identifier ?? [];
         const identifierValue =
             identifiers.find((i) => i.system === 'http://ns.electronichealth.net.au/id/medicare-number')?.value ??
@@ -54,7 +54,7 @@ export function SummaryContainer(props: ContainerProps) {
     const [response] = useService<Bundle>(() =>
         service({
             url,
-            ...(config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl
+            ...(config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl
                 ? { headers: { 'Cache-Control': null } }
                 : {}),
         }),

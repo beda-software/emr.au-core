@@ -21,8 +21,6 @@ export enum AuthProvider {
     Nuvyta = 'Nuvyta',
 }
 
-export type Tier = 'develop' | 'production';
-
 export interface SharedCredentials {
     accountDetails: SharedAccountDetails[];
     commonPassword?: string;
@@ -59,7 +57,8 @@ export type UserInitStrategy =
     | { type: 'mock'; practitionerId: string };
 
 export interface AuthProviderConfig {
-    tier: { [key in Tier]: { baseUrl: string; fhirBaseUrl: string } };
+    baseUrl: string;
+    fhirBaseUrl: string;
     client: AuthClientConfigParams;
     signIn: SignInStrategy;
     userInit: UserInitStrategy;
@@ -117,46 +116,22 @@ const MEDTECH_GLOBAL_MOCK_TOKEN =
 
 export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } = {
     [AuthProvider.AuCoreAidbox]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://aucore.aidbox.beda.software',
-                fhirBaseUrl: 'https://aucore.aidbox.beda.software/fhir',
-            },
-            production: {
-                baseUrl: 'https://aucore.aidbox.beda.software',
-                fhirBaseUrl: 'https://aucore.aidbox.beda.software/fhir',
-            },
-        },
+        baseUrl: 'https://aucore.aidbox.beda.software',
+        fhirBaseUrl: 'https://aucore.aidbox.beda.software/fhir',
         client: aidboxClientConfig('aucore.aidbox.beda.software'),
         signIn: { type: 'oauth' },
         userInit: { type: 'aidbox' },
     },
     [AuthProvider.ErequestingAidbox]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://erequesting.aidbox.beda.software',
-                fhirBaseUrl: 'https://erequesting.aidbox.beda.software/fhir',
-            },
-            production: {
-                baseUrl: 'https://erequesting.aidbox.beda.software',
-                fhirBaseUrl: 'https://erequesting.aidbox.beda.software/fhir',
-            },
-        },
+        baseUrl: 'https://erequesting.aidbox.beda.software',
+        fhirBaseUrl: 'https://erequesting.aidbox.beda.software/fhir',
         client: aidboxClientConfig('erequesting.aidbox.beda.software'),
         signIn: { type: 'oauth' },
         userInit: { type: 'aidbox' },
     },
     [AuthProvider.ErequestingSparked]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://smile.sparked-fhir.com/ereq',
-                fhirBaseUrl: 'https://smile.sparked-fhir.com/ereq/fhir/DEFAULT',
-            },
-            production: {
-                baseUrl: 'https://smile.sparked-fhir.com/ereq',
-                fhirBaseUrl: 'https://smile.sparked-fhir.com/ereq/fhir/DEFAULT',
-            },
-        },
+        baseUrl: 'https://smile.sparked-fhir.com/ereq',
+        fhirBaseUrl: 'https://smile.sparked-fhir.com/ereq/fhir/DEFAULT',
         client: {
             clientId: 'beda-emr',
             authPath: 'smartauth/oauth/authorize',
@@ -171,16 +146,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'smile' },
     },
     [AuthProvider.ErequestingCallistemon]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://server.callistemon.site/fhir',
-                fhirBaseUrl: 'https://server.callistemon.site/fhir',
-            },
-            production: {
-                baseUrl: 'https://server.callistemon.site/fhir',
-                fhirBaseUrl: 'https://server.callistemon.site/fhir',
-            },
-        },
+        baseUrl: 'https://server.callistemon.site/fhir',
+        fhirBaseUrl: 'https://server.callistemon.site/fhir',
         client: {
             clientId: 'callistemon',
             authPath: 'smart/oauth/authorize',
@@ -196,31 +163,15 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: '1153' },
     },
     [AuthProvider.SmartOnFhirAidbox]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://smartonfhir.aidbox.beda.software',
-                fhirBaseUrl: 'https://smartonfhir.aidbox.beda.software/fhir',
-            },
-            production: {
-                baseUrl: 'https://smartonfhir.aidbox.beda.software',
-                fhirBaseUrl: 'https://smartonfhir.aidbox.beda.software/fhir',
-            },
-        },
+        baseUrl: 'https://smartonfhir.aidbox.beda.software',
+        fhirBaseUrl: 'https://smartonfhir.aidbox.beda.software/fhir',
         client: aidboxClientConfig('smartonfhir.aidbox.beda.software'),
         signIn: { type: 'oauth' },
         userInit: { type: 'aidbox' },
     },
     [AuthProvider.SparkedHAPI]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://fhir.hl7.org.au/aucore',
-                fhirBaseUrl: 'https://fhir.hl7.org.au/aucore/fhir/DEFAULT',
-            },
-            production: {
-                baseUrl: 'https://fhir.hl7.org.au/aucore',
-                fhirBaseUrl: 'https://fhir.hl7.org.au/aucore/fhir/DEFAULT',
-            },
-        },
+        baseUrl: 'https://fhir.hl7.org.au/aucore',
+        fhirBaseUrl: 'https://fhir.hl7.org.au/aucore/fhir/DEFAULT',
         client: {
             clientId: 'beda-emr',
             authPath: 'smart/oauth/authorize',
@@ -236,20 +187,10 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'smile' },
     },
     [AuthProvider.BP]: {
-        tier: {
-            develop: {
-                baseUrl:
-                    'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
-                fhirBaseUrl:
-                    'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
-            },
-            production: {
-                baseUrl:
-                    'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
-                fhirBaseUrl:
-                    'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
-            },
-        },
+        baseUrl:
+            'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
+        fhirBaseUrl:
+            'https://bps-interop-practicegateway-connectathon-fhir-api.deva.svc.bpcloud.dev/api/interop/r4/fhir/',
         client: smartOAuthClientConfig('Best practice facade', {
             clientId: 'bp',
             redirectURL: `${window.location.origin}/bp-auth`,
@@ -258,16 +199,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: '15000000-0020-0000-0000-98a3489d6ffc' },
     },
     [AuthProvider.IRIS]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
-                fhirBaseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
-            },
-            production: {
-                baseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
-                fhirBaseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
-            },
-        },
+        baseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
+        fhirBaseUrl: 'https://fhirserver.intersystems.com.au/csp/fhir/r4',
         client: smartOAuthClientConfig('Intersystems', {
             clientId: 'iris',
             redirectURL: `${window.location.origin}/isir-auth`,
@@ -276,16 +209,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'cardy-igist' },
     },
     [AuthProvider.MediRecords]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
-                fhirBaseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
-            },
-            production: {
-                baseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
-                fhirBaseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
-            },
-        },
+        baseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
+        fhirBaseUrl: 'https://api-v1.test.medirecords.com/fhir/v1',
         client: smartOAuthClientConfig('Medirecords', {
             clientId: 'mr',
             redirectURL: `${window.location.origin}/auth`,
@@ -294,18 +219,9 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'b82b3842-ba16-4b01-8c24-7b0deee9b660' },
     },
     [AuthProvider.HaloConnect]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
-                fhirBaseUrl:
-                    'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
-            },
-            production: {
-                baseUrl: 'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
-                fhirBaseUrl:
-                    'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
-            },
-        },
+        baseUrl: 'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
+        fhirBaseUrl:
+            'https://api.stage.haloconnect.io/integrator/sites/63255e8a-d04a-42a6-8c75-90aa880ad94e/fhir/R4/',
         client: smartOAuthClientConfig('Halo Connect', {
             clientId: 'halo-connect',
             redirectURL: `${window.location.origin}`,
@@ -317,16 +233,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'pr-1' },
     },
     [AuthProvider.MedtechGlobal]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
-                fhirBaseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
-            },
-            production: {
-                baseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
-                fhirBaseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
-            },
-        },
+        baseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
+        fhirBaseUrl: 'https://alexapiuat.medtechglobal.com/FHIR',
         client: smartOAuthClientConfig('Medtech Global', {
             clientId: 'meditech-global',
             redirectURL: `${window.location.origin}/auth`,
@@ -336,16 +244,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'pr-1' },
     },
     [AuthProvider.Sparked]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
-                fhirBaseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
-            },
-            production: {
-                baseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
-                fhirBaseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
-            },
-        },
+        baseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
+        fhirBaseUrl: 'https://smile.sparked-fhir.com/aucore/fhir/DEFAULT/',
         client: smartOAuthClientConfig('Sparked', {
             clientId: 'sparked',
             redirectURL: `${window.location.origin}/auth`,
@@ -354,16 +254,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'leishman-leesa' },
     },
     [AuthProvider.DigitalHealth]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-                fhirBaseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-            },
-            production: {
-                baseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-                fhirBaseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-            },
-        },
+        baseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
+        fhirBaseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
         client: smartOAuthClientConfig('Digital Health', {
             clientId: 'digital-health',
             redirectURL: `${window.location.origin}/auth`,
@@ -372,16 +264,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'example-healthconnect-practitioner-1' },
     },
     [AuthProvider.Epic]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
-                fhirBaseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
-            },
-            production: {
-                baseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
-                fhirBaseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
-            },
-        },
+        baseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
+        fhirBaseUrl: 'https://connectathon-au.epic.com/Interconnect-connectathon-au/api/FHIR/R4/',
         client: smartOAuthClientConfig('Epic', {
             clientId: 'epic',
             redirectURL: `${window.location.origin}/auth`,
@@ -390,16 +274,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'e-.Lo31-.yLLfMmz0ylcV7A3' },
     },
     [AuthProvider.OrionHealth]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
-                fhirBaseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
-            },
-            production: {
-                baseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
-                fhirBaseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
-            },
-        },
+        baseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
+        fhirBaseUrl: 'https://interop-gateway.odl.io/fhir/4.0/',
         client: smartOAuthClientConfig('Orion Health', {
             clientId: 'orion-health',
             redirectURL: `${window.location.origin}/auth`,
@@ -408,16 +284,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'orion-health' },
     },
     [AuthProvider.EpicEU]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
-                fhirBaseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
-            },
-            production: {
-                baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
-                fhirBaseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
-            },
-        },
+        baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
+        fhirBaseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4',
         client: {
             clientId: 'EPIC-EU',
             authPath: '',
@@ -432,16 +300,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'epic-eu' },
     },
     [AuthProvider.MeditechEU]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://dev-mtx-interop.meditech.com/',
-                fhirBaseUrl: 'https://dev-mtx-interop.meditech.com/v2/uscore/STU6',
-            },
-            production: {
-                baseUrl: 'https://dev-mtx-interop.meditech.com/v2/uscore/STU6',
-                fhirBaseUrl: 'https://dev-mtx-interop.meditech.com/v2/uscore/STU6',
-            },
-        },
+        baseUrl: 'https://dev-mtx-interop.meditech.com/',
+        fhirBaseUrl: 'https://dev-mtx-interop.meditech.com/v2/uscore/STU6',
         client: {
             clientId: 'ips-testing@d390d8d8fcea406798ca241c6ffaf79e',
             authPath: '',
@@ -456,16 +316,8 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'meditech-eu' },
     },
     [AuthProvider.Nuvyta]: {
-        tier: {
-            develop: {
-                baseUrl: 'https://identity.global.nuvyta.cloud/',
-                fhirBaseUrl: 'https://test.demo.global.nuvyta.cloud/fhir/fhir',
-            },
-            production: {
-                baseUrl: 'https://test.demo.global.nuvyta.cloud/fhir/fhir',
-                fhirBaseUrl: 'https://test.demo.global.nuvyta.cloud/fhir/fhir',
-            },
-        },
+        baseUrl: 'https://identity.global.nuvyta.cloud/',
+        fhirBaseUrl: 'https://test.demo.global.nuvyta.cloud/fhir/fhir',
         client: {
             clientId: 'fhir-api.client',
             authPath: '',
@@ -480,11 +332,3 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'nuvyta' },
     },
 };
-
-export const tierConfigMap = Object.fromEntries(
-    Object.entries(authProvidersConfig).map(([provider, providerConfig]) => [provider, providerConfig.tier]),
-) as { [key in AuthProvider]: AuthProviderConfig['tier'] };
-
-export const authClientConfigMap = Object.fromEntries(
-    Object.entries(authProvidersConfig).map(([provider, providerConfig]) => [provider, providerConfig.client]),
-) as { [key in AuthProvider]: AuthClientConfigParams };

@@ -14,7 +14,7 @@ import { service } from '@beda.software/emr/services';
 import config from '@beda.software/emr-config';
 import { RenderRemoteData, useService, WithId } from '@beda.software/fhir-react';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth.ts';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { dashboard } from './dashboard';
 import { PatientEncounter } from './encounters';
@@ -43,7 +43,7 @@ const tabs: Array<Tab<WithId<Patient>>> = [
     },
 ];
 
-if (config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl) {
+if (config.baseURL === authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl) {
     tabs.push({
         path: 'documents',
         label: 'Documents',
@@ -53,12 +53,9 @@ if (config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl)
 
 if (
     [
-        tierConfigMap[AuthProvider.ErequestingAidbox].develop.baseUrl,
-        tierConfigMap[AuthProvider.ErequestingAidbox].production.baseUrl,
-        tierConfigMap[AuthProvider.ErequestingSparked].develop.baseUrl,
-        tierConfigMap[AuthProvider.ErequestingSparked].production.baseUrl,
-        tierConfigMap[AuthProvider.ErequestingCallistemon].develop.baseUrl,
-        tierConfigMap[AuthProvider.ErequestingCallistemon].production.baseUrl,
+        authProvidersConfig[AuthProvider.ErequestingAidbox].baseUrl,
+        authProvidersConfig[AuthProvider.ErequestingSparked].baseUrl,
+        authProvidersConfig[AuthProvider.ErequestingCallistemon].baseUrl,
     ].includes(config.baseURL)
 ) {
     tabs.push({
@@ -68,7 +65,7 @@ if (
     });
 }
 
-if (config.baseURL === tierConfigMap[AuthProvider.SmartOnFhirAidbox].develop.baseUrl) {
+if (config.baseURL === authProvidersConfig[AuthProvider.SmartOnFhirAidbox].baseUrl) {
     tabs.push({
         path: 'smart',
         label: 'Smart Apps',
@@ -76,7 +73,7 @@ if (config.baseURL === tierConfigMap[AuthProvider.SmartOnFhirAidbox].develop.bas
     });
 }
 
-if (config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl) {
+if (config.baseURL === authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl) {
     tabs.push({
         path: 'smart',
         label: 'Smart Apps',
@@ -85,8 +82,8 @@ if (config.baseURL === tierConfigMap[AuthProvider.AuCoreAidbox].develop.baseUrl)
 }
 
 export function PatientDetails() {
-    const isEpic = config.baseURL === tierConfigMap[AuthProvider.Epic].develop.baseUrl;
-    const isOrionHealth = config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl;
+    const isEpic = config.baseURL === authProvidersConfig[AuthProvider.Epic].baseUrl;
+    const isOrionHealth = config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl;
 
     return (
         <PatientDashboardProvider dashboard={dashboard}>
@@ -144,7 +141,7 @@ function OrionHealthPatientDetails() {
         return service<Patient>({
             method: 'GET',
             url: `/Patient/GE3DQMRZHE4UAU2ZKNPUC`,
-            ...(config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl
+            ...(config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl
                 ? { headers: { 'Cache-Control': null } }
                 : {}),
         });

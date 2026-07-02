@@ -6,7 +6,7 @@ import { SingleValue } from 'react-select';
 import { Select } from '@beda.software/emr/components';
 
 import logo from 'src/images/logo.svg';
-import { authClientConfigMap, authProvidersConfig, AuthProvider, type SharedCredentials } from 'src/services/auth';
+import { authProvidersConfig, AuthProvider, type SharedCredentials } from 'src/services/auth';
 
 import { SignInProps, useSignIn } from './hooks';
 import s from './SignIn.module.scss';
@@ -66,9 +66,9 @@ interface ProviderSelectItem {
 }
 
 function ProvidersSelect(props: ProvidersSelectProps) {
-    const options: ProviderSelectItem[] = Object.entries(authClientConfigMap).map(([authProvider, configItem]) => ({
+    const options: ProviderSelectItem[] = Object.entries(authProvidersConfig).map(([authProvider, configItem]) => ({
         value: authProvider as AuthProvider,
-        label: configItem.tabTitle,
+        label: configItem.client.tabTitle,
     }));
 
     const defaultValue = useMemo(

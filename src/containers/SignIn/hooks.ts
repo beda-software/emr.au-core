@@ -6,10 +6,8 @@ import {
     setAuthClientRedirectURL,
     setAuthTokenURLpath,
 } from '@beda.software/emr/services';
-import config from '@beda.software/emr-config';
-
 import { authProvidersConfig } from './authProvidersConfig';
-import { AuthProvider, saveAuthProviderToStorage, Tier } from 'src/services/auth';
+import { AuthProvider, saveAuthProviderToStorage } from 'src/services/auth';
 import { setBaseUrl, setClientId, setFhirBaseUrl } from 'src/services/storage';
 
 export interface SignInProps {
@@ -20,13 +18,11 @@ export interface SignInProps {
 export function useSignIn(props: SignInProps) {
     const [activeAuthProvider, setAuthProvider] = useState<AuthProvider>(AuthProvider.AuCoreAidbox);
     const providerConfig = useMemo(() => authProvidersConfig[activeAuthProvider], [activeAuthProvider]);
-    const tierConfig = providerConfig.tier;
     const authClientConfig = providerConfig.client;
-    const tier = config.tier as Tier;
 
     useEffect(() => {
-        setBaseUrl(tierConfig[tier].baseUrl);
-        setFhirBaseUrl(tierConfig[tier].fhirBaseUrl);
+        setBaseUrl(providerConfig.baseUrl);
+        setFhirBaseUrl(providerConfig.fhirBaseUrl);
         setClientId(authClientConfig.clientId);
         setAuthClientRedirectURL(authClientConfig.redirectURL);
         setAuthTokenURLpath(authClientConfig.tokenPath);
@@ -34,7 +30,7 @@ export function useSignIn(props: SignInProps) {
         if (props.onSwitchService) {
             props.onSwitchService(activeAuthProvider);
         }
-    }, [props, authClientConfig, tierConfig, tier, activeAuthProvider]);
+    }, [props, authClientConfig, providerConfig, activeAuthProvider]);
 
     const authorize = useCallback(() => {
         const { signIn } = providerConfig;
@@ -54,7 +50,7 @@ export function useSignIn(props: SignInProps) {
         const authState: OAuthState | undefined = props.originPathName ? { nextUrl: props.originPathName } : undefined;
 
         window.location.href = getAuthorizeUrl({
-            baseUrl: tierConfig[tier].baseUrl,
+            baseUrl: providerConfig.baseUrl,
             authPath: authClientConfig.authPath,
             params: new URLSearchParams({
                 client_id: authClientConfig.clientId,
@@ -64,7 +60,7 @@ export function useSignIn(props: SignInProps) {
             }),
             state: authState,
         });
-    }, [props.originPathName, authClientConfig, tierConfig, tier, providerConfig]);
+    }, [props.originPathName, authClientConfig, providerConfig]);
 
     return { activeAuthProvider, authorize, setAuthProvider, authClientConfig };
 }

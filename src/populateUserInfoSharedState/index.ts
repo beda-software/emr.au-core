@@ -11,8 +11,7 @@ import {
 import config from '@beda.software/emr-config';
 import { failure, RemoteDataResult, success } from '@beda.software/remote-data';
 
-import { authProvidersConfig } from 'src/containers/SignIn/authProvidersConfig';
-import { AuthProvider, tierConfigMap } from 'src/services/auth';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth';
 
 export interface SmileIdTokenData extends JWTPayload {
     fhirUser: string; //e.g "null/Practitioner/<practitioner-id>"
@@ -37,7 +36,7 @@ const mockUserInfoSharedState = (practitionerId: string) => async (): Promise<Re
     };
     sharedAuthorizedUser.setSharedState(user);
 
-    if (config.baseURL === tierConfigMap[AuthProvider.OrionHealth].develop.baseUrl) {
+    if (config.baseURL === authProvidersConfig[AuthProvider.OrionHealth].baseUrl) {
         sharedAuthorizedPractitioner.setSharedState({ resourceType: 'Practitioner', id: practitionerId });
         sharedAuthorizedPractitionerRoles.setSharedState([]);
     } else {

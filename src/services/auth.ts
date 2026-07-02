@@ -2,15 +2,12 @@ import { AuthProvider } from 'src/containers/SignIn/authProvidersConfig';
 
 export {
     AuthProvider,
-    authClientConfigMap,
     authProvidersConfig,
-    tierConfigMap,
     type AuthClientConfigParams,
     type AuthProviderConfig,
     type SharedAccountDetails,
     type SharedCredentials,
     type SignInStrategy,
-    type Tier,
     type UserInitStrategy,
 } from 'src/containers/SignIn/authProvidersConfig';
 

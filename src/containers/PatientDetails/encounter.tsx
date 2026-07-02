@@ -6,7 +6,7 @@ import { compileAsFirst, formatPeriodDateTime } from '@beda.software/emr/dist/ut
 import config from '@beda.software/emr-config';
 import { WithId } from '@beda.software/fhir-react';
 
-import { AuthProvider, tierConfigMap } from 'src/services/auth.ts';
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { EncounterOverview } from './EncounterOverview';
 import { Documents } from '.'
@@ -31,7 +31,7 @@ const tabs: Array<Tab<Encounter|Patient>> = [
 
 ];
 
-if (config.baseURL === tierConfigMap[AuthProvider.SmartOnFhirAidbox].develop.baseUrl) {
+if (config.baseURL === authProvidersConfig[AuthProvider.SmartOnFhirAidbox].baseUrl) {
     tabs.push({
         path: 'smart',
         label: 'Smart Apps',
