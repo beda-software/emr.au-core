@@ -9,10 +9,11 @@ import { PatientDocumentDetails } from '@beda.software/emr/dist/containers/Patie
 import { PatientDocuments } from '@beda.software/emr/dist/containers/PatientDetails/PatientDocuments/index';
 import { PatientOverview } from '@beda.software/emr/dist/containers/PatientDetails/PatientOverviewDynamic/index';
 import { PageTabs, ResourceDetailPage, Tab } from '@beda.software/emr/dist/uberComponents/ResourceDetailPage/index';
-import { compileAsFirst, renderHumanName, selectCurrentUserRoleResource } from '@beda.software/emr/dist/utils/index';
+import { compileAsFirst, renderHumanName } from '@beda.software/emr/dist/utils/index';
 import { service } from '@beda.software/emr/services';
 import config from '@beda.software/emr-config';
 import { RenderRemoteData, useService, WithId } from '@beda.software/fhir-react';
+import { ClinicalContext } from '@beda.software/fhir-questionnaire';
 
 import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
@@ -172,7 +173,20 @@ function OrionHealthPatientDetails() {
 }
 
 export function Documents({ patient, encounter }: { patient: WithId<Patient>, encounter?: Encounter }) {
-    const author = selectCurrentUserRoleResource();
+    const context = [
+        {
+            name: 'patient',
+            resource: patient
+        },
+        {
+            name: 'Patient',
+            resource: patient
+        },
+        { name: "encounter", resource: encounter ? encounter : { resourceType: "Encounter"} },
+        { name: "Encounter", resource: encounter ? encounter : { resourceType: "Encounter" }},
+        { name: "gpccmppractitionerrole", resource: { resourceType: "PractitionerRole" } as any },
+
+    ];
     return (
         <Routes>
             <Route path="/" element={<PatientDocuments patient={patient} />} />
@@ -180,18 +194,14 @@ export function Documents({ patient, encounter }: { patient: WithId<Patient>, en
                 path="/new/:questionnaireId"
                 element={
                     <S.PatientDocument>
-                        <PatientDocument
-                            patient={patient}
-                            author={author}
-                            autoSave={true}
-                            onSuccess={() => {
-                                window.history.back();
-                            }}
-                            launchContextParameters={[
-                                {name: "encounter", resource: encounter },
-                                { name: "gpccmppractitionerrole", resource: {resourceType: "PractitionerRole"} },
-                            ]}
-                        />
+                        <ClinicalContext context={context}>
+                            <PatientDocument
+                                autoSave={true}
+                                onSuccess={() => {
+                                    window.history.back();
+                                }}
+                            />
+                        </ClinicalContext>
                     </S.PatientDocument>
                 }
             />
