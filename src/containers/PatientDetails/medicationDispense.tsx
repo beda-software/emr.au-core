@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro';
-import { Bundle, MedicationDispense, MedicationRequest, Patient } from 'fhir/r4b';
+import { Bundle, MedicationRequest, Patient } from 'fhir/r4b';
 
 import { ResourceListPageContent } from '@beda.software/emr/dist/uberComponents/ResourceListPageContent/index';
 import { formatHumanDate } from '@beda.software/emr/dist/utils/index';
