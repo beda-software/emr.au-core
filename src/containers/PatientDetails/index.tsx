@@ -18,6 +18,7 @@ import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { dashboard } from './dashboard';
 import { PatientEncounter } from './encounters';
+import { PatientMedicationRequest } from './medicationRequests';
 import { PatientApps } from './PatientApps/index';
 import { PatientServiceRequest } from './requests';
 import { ResourcesTabRoutes } from './ResourcesTabRoutes';
@@ -48,6 +49,19 @@ if (config.baseURL === authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl) {
         path: 'documents',
         label: 'Documents',
         component: ({ resource }) => <Documents patient={resource} />,
+    });
+    tabs.push({
+        path: 'medication-request',
+        label: 'Medication requests',
+        component: ({ resource }) => <PatientMedicationRequest patient={resource} />,
+    });
+}
+
+if (config.baseURL === authProvidersConfig[AuthProvider.SmartOnFhirAidbox].baseUrl) {
+    tabs.push({
+        path: 'medication-request',
+        label: 'Medication requests',
+        component: ({ resource }) => <PatientMedicationRequest patient={resource} />,
     });
 }
 
