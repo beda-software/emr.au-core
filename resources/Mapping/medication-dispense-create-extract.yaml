@@ -1,0 +1,34 @@
+resourceType: Mapping
+id: medication-dispense-create-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - patientId: "{{ %QuestionnaireResponse.answers('patient-id') }}"
+    - patientName: "{{ %QuestionnaireResponse.answers('patient-name') }}"
+    - medicationRequestId: "{{ %QuestionnaireResponse.answers('medication-request-id') }}"
+    - medication: "{{ %QuestionnaireResponse.answers('medication') }}"
+    - status: "{{ %QuestionnaireResponse.answers('status').code }}"
+    - whenHandedOver: "{{ %QuestionnaireResponse.answers('when-handed-over') }}"
+    - dosageInstruction: "{{ %QuestionnaireResponse.answers('dosage-instruction') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /MedicationDispense
+      resource:
+        resourceType: MedicationDispense
+        status: "{{ %status }}"
+        medicationCodeableConcept:
+          coding:
+            - "{{ %medication }}"
+        subject:
+          reference: "{{ 'Patient/' + %patientId }}"
+          display: "{{ %patientName }}"
+        authorizingPrescription:
+          - reference: "{{ 'MedicationRequest/' + %medicationRequestId }}"
+        whenHandedOver: "{{ %whenHandedOver }}"
+        dosageInstruction:
+          - "{% if %dosageInstruction.exists() and %dosageInstruction != '' %}":
+              text: "{{ %dosageInstruction }}"
