@@ -1,0 +1,107 @@
+id: medication-request-edit
+resourceType: Questionnaire
+name: medication-request-edit
+title: Edit medication request
+status: active
+description: Edits an existing AU Core MedicationRequest.
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: MedicationRequest
+    type:
+      - MedicationRequest
+mapping:
+  - reference: urn:uuid:Mapping:medication-request-edit-extract
+item:
+  - text: MedicationRequestId
+    type: string
+    linkId: medication-request-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.id"
+  - text: Medication
+    type: choice
+    linkId: medication
+    required: true
+    readOnly: true
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/australian-medication-1
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.medicationCodeableConcept.coding.first()"
+  - text: Status
+    type: choice
+    linkId: status
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: active
+          display: Active
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: draft
+          display: Draft
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: on-hold
+          display: On hold
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: completed
+          display: Completed
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: cancelled
+          display: Cancelled
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: stopped
+          display: Stopped
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code=%MedicationRequest.status)"
+  - text: Intent
+    type: choice
+    linkId: intent
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: order
+          display: Order
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: plan
+          display: Plan
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='intent').answerOption.valueCoding.where(code=%MedicationRequest.intent)"
+  - text: Authored on
+    type: date
+    linkId: authored-on
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.authoredOn"
+  - text: Reason
+    type: choice
+    linkId: reason
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/reason-for-request-1
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.reasonCode.first().coding.first()"
+  - text: Dosage instruction
+    type: string
+    linkId: dosage-instruction
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.dosageInstruction.first().text"
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-request-edit

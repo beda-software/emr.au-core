@@ -1,0 +1,105 @@
+id: medication-request-create
+resourceType: Questionnaire
+name: medication-request-create
+title: Create medication request
+status: active
+description: Creates a new AU Core MedicationRequest for a patient.
+mapping:
+  - reference: urn:uuid:Mapping:medication-request-create-extract
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: Author
+    type:
+      - PractitionerRole
+      - Practitioner
+      - Organization
+item:
+  - text: PatientId
+    type: string
+    linkId: patient-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patient-name
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: AuthorType
+    type: string
+    linkId: author-type
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Author.resourceType"
+  - text: AuthorId
+    type: string
+    linkId: author-id
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Author.id"
+  - text: Medication
+    type: choice
+    linkId: medication
+    required: true
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/australian-medication-1
+  - text: Status
+    type: choice
+    linkId: status
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: active
+          display: Active
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: draft
+          display: Draft
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: on-hold
+          display: On hold
+  - text: Intent
+    type: choice
+    linkId: intent
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: order
+          display: Order
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: plan
+          display: Plan
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='intent').answerOption.valueCoding.where(code='order')"
+  - text: Authored on
+    type: date
+    linkId: authored-on
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "today()"
+  - text: Reason
+    type: choice
+    linkId: reason
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/reason-for-request-1
+  - text: Dosage instruction
+    type: string
+    linkId: dosage-instruction
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-request-create

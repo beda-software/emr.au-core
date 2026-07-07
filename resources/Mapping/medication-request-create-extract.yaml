@@ -1,0 +1,45 @@
+resourceType: Mapping
+id: medication-request-create-extract
+type: FHIRPath
+body:
+  "{% assign %}":
+    - patientId: "{{ %QuestionnaireResponse.answers('patient-id') }}"
+    - patientName: "{{ %QuestionnaireResponse.answers('patient-name') }}"
+    - authorType: "{{ %QuestionnaireResponse.answers('author-type') }}"
+    - authorId: "{{ %QuestionnaireResponse.answers('author-id') }}"
+    - medication: "{{ %QuestionnaireResponse.answers('medication') }}"
+    - status: "{{ %QuestionnaireResponse.answers('status').code }}"
+    - intent: "{{ %QuestionnaireResponse.answers('intent').code }}"
+    - authoredOn: "{{ %QuestionnaireResponse.answers('authored-on') }}"
+    - reason: "{{ %QuestionnaireResponse.answers('reason') }}"
+    - dosageInstruction: "{{ %QuestionnaireResponse.answers('dosage-instruction') }}"
+
+  resourceType: Bundle
+  type: transaction
+  entry:
+    - request:
+        method: POST
+        url: /MedicationRequest
+      resource:
+        resourceType: MedicationRequest
+        meta:
+          profile:
+            - http://hl7.org.au/fhir/core/StructureDefinition/au-core-medicationrequest
+        status: "{{ %status }}"
+        intent: "{{ %intent }}"
+        medicationCodeableConcept:
+          coding:
+            - "{{ %medication }}"
+        subject:
+          reference: "{{ 'Patient/' + %patientId }}"
+          display: "{{ %patientName }}"
+        authoredOn: "{{ %authoredOn }}"
+        requester:
+          reference: "{{ %authorType + '/' + %authorId }}"
+        reasonCode:
+          - "{% if %reason.exists() %}":
+              coding:
+                - "{{ %reason }}"
+        dosageInstruction:
+          - "{% if %dosageInstruction.exists() and %dosageInstruction != '' %}":
+              text: "{{ %dosageInstruction }}"
