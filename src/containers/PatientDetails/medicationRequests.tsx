@@ -73,7 +73,7 @@ export function PatientMedicationRequest({ patient }: { patient: Patient }) {
             searchParams={{
                 patient: patient.id!,
                 _include: 'MedicationRequest:requester',
-                _sort: '-authored-on',
+                _sort: '-authoredon',
             }}
             getTableColumns={() => [
                 {
