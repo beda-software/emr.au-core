@@ -23,7 +23,7 @@ const findOrganizationNameById = compileAsFirst<Bundle, string>(
     "Bundle.entry.resource.where(resourceType='Organization' and id=%id).first().name",
 );
 
-function getRequesterDisplay(resource: MedicationRequest, bundle: Bundle): string {
+export function getRequesterDisplay(resource: MedicationRequest, bundle: Bundle): string {
     if (resource.requester?.display) {
         return resource.requester.display;
     }
@@ -44,7 +44,7 @@ function getRequesterDisplay(resource: MedicationRequest, bundle: Bundle): strin
     return 'N/A';
 }
 
-function getMedicationDisplay(resource: MedicationRequest): string {
+export function getMedicationDisplay(resource: MedicationRequest): string {
     if (resource.medicationCodeableConcept) {
         return resource.medicationCodeableConcept.coding?.[0]?.display ?? resource.medicationCodeableConcept.text ?? 'N/A';
     }
@@ -54,7 +54,7 @@ function getMedicationDisplay(resource: MedicationRequest): string {
     return 'N/A';
 }
 
-function getReasonDisplay(resource: MedicationRequest): string {
+export function getReasonDisplay(resource: MedicationRequest): string {
     const reason = resource.reasonCode?.[0];
     return reason?.coding?.[0]?.display ?? reason?.text ?? 'N/A';
 }

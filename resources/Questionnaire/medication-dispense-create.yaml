@@ -1,0 +1,63 @@
+id: medication-dispense-create
+resourceType: Questionnaire
+name: medication-dispense-create
+title: Dispense medication
+status: active
+description: Creates a MedicationDispense for a MedicationRequest.
+mapping:
+  - reference: urn:uuid:Mapping:medication-dispense-create-extract
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: MedicationRequest
+    type:
+      - MedicationRequest
+item:
+  - text: MedicationRequestId
+    type: string
+    linkId: medication-request-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.id"
+  - text: PatientId
+    type: string
+    linkId: patient-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patient-name
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: Medication
+    type: choice
+    linkId: medication
+    hidden: true
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/australian-medication-1
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.medicationCodeableConcept.coding.first()"
+  - text: Dosage instruction
+    type: string
+    linkId: dosage-instruction
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.dosageInstruction.first().text"
+  - text: Are you sure you want to dispense this medication?
+    linkId: are-you-sure
+    type: display
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-dispense-create
