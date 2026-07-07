@@ -1,4 +1,4 @@
-import { Encounter, Patient } from 'fhir/r4b';
+import { Patient } from 'fhir/r4b';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { PatientDocumentDetails } from '@beda.software/emr/dist/containers/Patie
 import { PatientDocuments } from '@beda.software/emr/dist/containers/PatientDetails/PatientDocuments/index';
 import { PatientOverview } from '@beda.software/emr/dist/containers/PatientDetails/PatientOverviewDynamic/index';
 import { PageTabs, ResourceDetailPage, Tab } from '@beda.software/emr/dist/uberComponents/ResourceDetailPage/index';
-import { compileAsFirst, renderHumanName, selectCurrentUserRoleResource } from '@beda.software/emr/dist/utils/index';
+import { compileAsFirst, renderHumanName } from '@beda.software/emr/dist/utils/index';
 import { service } from '@beda.software/emr/services';
 import config from '@beda.software/emr-config';
 import { RenderRemoteData, useService, WithId } from '@beda.software/fhir-react';
@@ -171,8 +171,7 @@ function OrionHealthPatientDetails() {
     );
 }
 
-export function Documents({ patient, encounter }: { patient: WithId<Patient>, encounter?: Encounter }) {
-    const author = selectCurrentUserRoleResource();
+export function Documents({ patient }: { patient: WithId<Patient> }) {
     return (
         <Routes>
             <Route path="/" element={<PatientDocuments patient={patient} />} />
@@ -180,18 +179,12 @@ export function Documents({ patient, encounter }: { patient: WithId<Patient>, en
                 path="/new/:questionnaireId"
                 element={
                     <S.PatientDocument>
-                        <PatientDocument
-                            patient={patient}
-                            author={author}
-                            autoSave={true}
-                            onSuccess={() => {
-                                window.history.back();
-                            }}
-                            launchContextParameters={[
-                                {name: "encounter", resource: encounter },
-                                { name: "gpccmppractitionerrole", resource: {resourceType: "PractitionerRole"} },
-                            ]}
-                        />
+                            <PatientDocument
+                                autoSave={true}
+                                onSuccess={() => {
+                                    window.history.back();
+                                }}
+                            />
                     </S.PatientDocument>
                 }
             />

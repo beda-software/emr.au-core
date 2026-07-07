@@ -25,7 +25,7 @@ const tabs: Array<Tab<Encounter|Patient>> = [
     {
         path: 'documents',
         label: 'Documents',
-        component: ({ resource, bundle }) => <Documents patient={getPatient(bundle)!} encounter={resource as Encounter}/>,
+        component: ({ bundle }) => <Documents patient={getPatient(bundle)!} />,
     },
 
 
@@ -56,6 +56,15 @@ export function EncounterPage() {
                 patient: id,
                 _include: ['Encounter:patient', 'Encounter:practitioner'],
             })}
+            getClinicalContext={({ resource, bundle }) => {
+                const patient = getPatient(bundle)!;
+                return [
+                    { name: 'patient', resource: patient },
+                    { name: 'Patient', resource: patient },
+                    { name: 'encounter', resource: resource },
+                    { name: 'Encounter', resource: resource },
+                ];
+            }}
             getTitle={({ resource, bundle }) => getName(resource, bundle) ?? 'N/A'}
             tabs={tabs}
             maxWidth="100%"
