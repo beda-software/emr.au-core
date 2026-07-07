@@ -1,0 +1,105 @@
+id: medication-request-create
+resourceType: Questionnaire
+name: medication-request-create
+title: Create medication request
+status: active
+description: Creates a new AU Core medication request for a patient.
+subjectType:
+  - Patient
+mapping:
+  - reference: urn:uuid:Mapping:medication-request-create
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+item:
+  - text: PatientId
+    type: string
+    linkId: patientId
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patientName
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: Requester
+    type: reference
+    linkId: requester
+    required: true
+    referenceResource:
+      - PractitionerRole
+      - Practitioner
+    answerExpression:
+      language: application/x-fhir-query
+      expression: "PractitionerRole?_assoc=practitioner"
+    choiceColumn:
+      - forDisplay: true
+        path: >-
+          practitioner.resource.name.given.first() + ' ' +
+          practitioner.resource.name.family + ' - ' + specialty.first().coding.display
+  - linkId: medication
+    text: Medication
+    type: string
+    required: true
+  - linkId: reason
+    text: Reason
+    type: string
+    required: true
+  - linkId: dosage
+    text: Dosage instructions
+    type: string
+    required: true
+  - linkId: status
+    text: Status
+    type: choice
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: active
+          display: Active
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: draft
+          display: Draft
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: on-hold
+          display: On hold
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code='active')"
+  - linkId: intent
+    text: Intent
+    type: choice
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: order
+          display: Order
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: plan
+          display: Plan
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='intent').answerOption.valueCoding.where(code='order')"
+  - linkId: authored-on
+    type: date
+    text: Authored on
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "today()"
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-request-create

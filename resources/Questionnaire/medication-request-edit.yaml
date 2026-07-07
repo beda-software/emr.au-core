@@ -1,0 +1,137 @@
+id: medication-request-edit
+resourceType: Questionnaire
+name: medication-request-edit
+title: Edit medication request
+status: active
+description: Edits an existing AU Core medication request.
+subjectType:
+  - Patient
+mapping:
+  - reference: urn:uuid:Mapping:medication-request-edit
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: MedicationRequest
+    type:
+      - MedicationRequest
+item:
+  - text: MedicationRequestId
+    type: string
+    linkId: medicationRequestId
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.id"
+  - text: PatientId
+    type: string
+    linkId: patientId
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patientName
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: Requester reference
+    type: string
+    linkId: requester-reference
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.requester.reference"
+  - text: Requester display
+    type: string
+    linkId: requester-display
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.requester.display"
+  - linkId: medication
+    text: Medication
+    type: string
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "iif(%MedicationRequest.medicationCodeableConcept.coding.first().display.exists(), %MedicationRequest.medicationCodeableConcept.coding.first().display, %MedicationRequest.medicationCodeableConcept.text)"
+  - linkId: reason
+    text: Reason
+    type: string
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "iif(%MedicationRequest.reasonCode.first().coding.first().display.exists(), %MedicationRequest.reasonCode.first().coding.first().display, %MedicationRequest.reasonCode.first().text)"
+  - linkId: dosage
+    text: Dosage instructions
+    type: string
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.dosageInstruction.first().text"
+  - linkId: status
+    text: Status
+    type: choice
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: active
+          display: Active
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: completed
+          display: Completed
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: cancelled
+          display: Cancelled
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: on-hold
+          display: On hold
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: stopped
+          display: Stopped
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: draft
+          display: Draft
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code=%MedicationRequest.status)"
+  - linkId: intent
+    text: Intent
+    type: choice
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: order
+          display: Order
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: plan
+          display: Plan
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='intent').answerOption.valueCoding.where(code=%MedicationRequest.intent)"
+  - linkId: authored-on
+    type: date
+    text: Authored on
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.authoredOn"
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-request-edit
