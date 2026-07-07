@@ -4,26 +4,23 @@ import { Bundle, MedicationDispense, MedicationRequest, Patient } from 'fhir/r4b
 import { ResourceListPageContent } from '@beda.software/emr/dist/uberComponents/ResourceListPageContent/index';
 import { formatHumanDate } from '@beda.software/emr/dist/utils/index';
 import { matchCurrentUserRole, Role } from '@beda.software/emr/dist/utils/role';
+import { compileAsArray } from '@beda.software/emr/dist/utils/index';
 import { questionnaireAction } from '@beda.software/emr/uberComponents';
 
 import { getMedicationDisplay, getRequesterDisplay } from './medicationRequests';
 
+const pendingMedicationRequests = compileAsArray<Bundle, MedicationRequest>(`
+%Bundle.entry.resource.where(
+resourceType='MedicationRequest'
+and
+(%Bundle.entry.resource
+        .where(resourceType='MedicationDispense')
+        .authorizingPrescription.reference.select(split('/')[1])
+contains id).not()
+)`)
+
 function extractUndispensedMedicationRequests(bundle: Bundle): MedicationRequest[] {
-    const entries = bundle.entry ?? [];
-
-    const dispensedRequestIds = new Set(
-        entries
-            .map((entry) => entry.resource)
-            .filter((resource): resource is MedicationDispense => resource?.resourceType === 'MedicationDispense')
-            .flatMap((resource) => resource.authorizingPrescription ?? [])
-            .map((reference) => reference.reference?.split('/').pop())
-            .filter((id): id is string => !!id),
-    );
-
-    return entries
-        .filter((entry) => entry.resource?.resourceType === 'MedicationRequest')
-        .map((entry) => entry.resource as MedicationRequest)
-        .filter((resource) => !resource.id || !dispensedRequestIds.has(resource.id));
+    return pendingMedicationRequests(bundle, {Bundle: bundle});
 }
 
 export function PatientMedicationDispense({ patient }: { patient: Patient }) {
