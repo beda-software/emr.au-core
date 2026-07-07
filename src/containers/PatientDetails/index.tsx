@@ -1,4 +1,4 @@
-import { Encounter, Patient } from 'fhir/r4b';
+import { Patient } from 'fhir/r4b';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -13,7 +13,6 @@ import { compileAsFirst, renderHumanName } from '@beda.software/emr/dist/utils/i
 import { service } from '@beda.software/emr/services';
 import config from '@beda.software/emr-config';
 import { RenderRemoteData, useService, WithId } from '@beda.software/fhir-react';
-import { ClinicalContext } from '@beda.software/fhir-questionnaire';
 
 import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
@@ -172,21 +171,7 @@ function OrionHealthPatientDetails() {
     );
 }
 
-export function Documents({ patient, encounter }: { patient: WithId<Patient>, encounter?: Encounter }) {
-    const context = [
-        {
-            name: 'patient',
-            resource: patient
-        },
-        {
-            name: 'Patient',
-            resource: patient
-        },
-        { name: "encounter", resource: encounter ? encounter : { resourceType: "Encounter"} },
-        { name: "Encounter", resource: encounter ? encounter : { resourceType: "Encounter" }},
-        { name: "gpccmppractitionerrole", resource: { resourceType: "PractitionerRole" } as any },
-
-    ];
+export function Documents({ patient }: { patient: WithId<Patient> }) {
     return (
         <Routes>
             <Route path="/" element={<PatientDocuments patient={patient} />} />
@@ -194,14 +179,12 @@ export function Documents({ patient, encounter }: { patient: WithId<Patient>, en
                 path="/new/:questionnaireId"
                 element={
                     <S.PatientDocument>
-                        <ClinicalContext context={context}>
                             <PatientDocument
                                 autoSave={true}
                                 onSuccess={() => {
                                     window.history.back();
                                 }}
                             />
-                        </ClinicalContext>
                     </S.PatientDocument>
                 }
             />
