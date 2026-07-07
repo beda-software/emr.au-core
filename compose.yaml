@@ -5,6 +5,19 @@ services:
       - export
       - --output
       - /app/bundles/bundle.json
+      - --external-questionnaire-fce-fhir-converter-url
+      - http://questionnaire-fce-fhir-converter:3000/to-fhir
+    depends_on:
+      questionnaire-fce-fhir-converter:
+        condition: service_healthy
     volumes:
       - ./resources:/app/resources
       - ./bundles:/app/bundles
+
+  questionnaire-fce-fhir-converter:
+    image: bedasoftware/questionnaire-fce-fhir-converter:latest
+    healthcheck:
+      test: curl --fail http://localhost:3000/health || exit 1
+      interval: 5s
+      timeout: 30s
+      retries: 50
