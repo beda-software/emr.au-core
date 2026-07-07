@@ -1,0 +1,10 @@
+services:
+  build-resources:
+    image: bedasoftware/fhirsnake:latest
+    command:
+      - export
+      - --output
+      - /app/bundles/bundle.json
+    volumes:
+      - ./resources:/app/resources
+      - ./bundles:/app/bundles
