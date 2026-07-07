@@ -18,6 +18,7 @@ import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
 import { dashboard } from './dashboard';
 import { PatientEncounter } from './encounters';
+import { PatientMedicationDispense } from './medicationDispense';
 import { PatientMedicationRequest } from './medicationRequests';
 import { PatientApps } from './PatientApps/index';
 import { PatientServiceRequest } from './requests';
@@ -76,6 +77,11 @@ if (
         path: 'medication-request',
         label: 'Medication requests',
         component: ({ resource }) => <PatientMedicationRequest patient={resource} />,
+    });
+    tabs.push({
+        path: 'medication-dispense',
+        label: 'Medication dispense',
+        component: ({ resource }) => <PatientMedicationDispense patient={resource} />,
     });
 }
 

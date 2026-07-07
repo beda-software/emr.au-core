@@ -1,0 +1,95 @@
+id: medication-dispense-create
+resourceType: Questionnaire
+name: medication-dispense-create
+title: Dispense medication
+status: active
+description: Creates a MedicationDispense for a MedicationRequest that has not been dispensed yet.
+mapping:
+  - reference: urn:uuid:Mapping:medication-dispense-create-extract
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: MedicationRequest
+    type:
+      - MedicationRequest
+item:
+  - text: PatientId
+    type: string
+    linkId: patient-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patient-name
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: MedicationRequestId
+    type: string
+    linkId: medication-request-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.id"
+  - text: Medication
+    type: choice
+    linkId: medication
+    required: true
+    readOnly: true
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/australian-medication-1
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.medicationCodeableConcept.coding.first()"
+  - text: Status
+    type: choice
+    linkId: status
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationdispense-status
+          code: completed
+          display: Completed
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationdispense-status
+          code: in-progress
+          display: In progress
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationdispense-status
+          code: on-hold
+          display: On hold
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationdispense-status
+          code: declined
+          display: Declined
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationdispense-status
+          code: cancelled
+          display: Cancelled
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code='completed')"
+  - text: When handed over
+    type: dateTime
+    linkId: when-handed-over
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "now()"
+  - text: Dosage instruction
+    type: string
+    linkId: dosage-instruction
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.dosageInstruction.first().text"
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-dispense-create
