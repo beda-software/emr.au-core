@@ -1,0 +1,149 @@
+id: medication-request-edit
+resourceType: Questionnaire
+name: medication-request-edit
+title: Edit medication request
+status: active
+description: Edits an existing AU Core MedicationRequest.
+launchContext:
+  - name:
+      code: Patient
+    type:
+      - Patient
+  - name:
+      code: MedicationRequest
+    type:
+      - MedicationRequest
+mapping:
+  - reference: urn:uuid:Mapping:medication-request-edit-extract
+item:
+  - text: MedicationRequestId
+    type: string
+    linkId: medication-request-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.id"
+  - text: PatientId
+    type: string
+    linkId: patient-id
+    hidden: true
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.id"
+  - text: PatientName
+    type: string
+    linkId: patient-name
+    hidden: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Patient.name.first().given.first() + ' ' + %Patient.name.first().family"
+  - text: Medication
+    type: choice
+    linkId: medication
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "79115011000036100"
+          display: Paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "387517004"
+          display: Paracetamol 500 mg tablet
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "387458008"
+          display: Aspirin 100 mg tablet
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "372756006"
+          display: Simvastatin 20 mg tablet
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.medicationCodeableConcept.coding.first()"
+  - text: Status
+    type: choice
+    linkId: status
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: active
+          display: Active
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: draft
+          display: Draft
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: on-hold
+          display: On hold
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: completed
+          display: Completed
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: cancelled
+          display: Cancelled
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
+          code: stopped
+          display: Stopped
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code=%MedicationRequest.status)"
+  - text: Intent
+    type: choice
+    linkId: intent
+    required: true
+    answerOption:
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: order
+          display: Order
+      - valueCoding:
+          system: http://hl7.org/fhir/CodeSystem/medicationrequest-intent
+          code: plan
+          display: Plan
+    initialExpression:
+      language: text/fhirpath
+      expression: "%Questionnaire.repeat(item).where(linkId='intent').answerOption.valueCoding.where(code=%MedicationRequest.intent)"
+  - text: Authored on
+    type: date
+    linkId: authored-on
+    required: true
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.authoredOn"
+  - text: Reason
+    type: choice
+    linkId: reason
+    answerOption:
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "278414003"
+          display: Pain management
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "38341003"
+          display: Hypertension
+      - valueCoding:
+          system: http://snomed.info/sct
+          code: "44054006"
+          display: Diabetes mellitus type 2
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.reasonCode.first().coding.first()"
+  - text: Dosage instruction
+    type: string
+    linkId: dosage-instruction
+    initialExpression:
+      language: text/fhirpath
+      expression: "%MedicationRequest.dosageInstruction.first().text"
+meta:
+  profile:
+    - https://emr-core.beda.software/StructureDefinition/fhir-emr-questionnaire
+url: https://aidbox.emr.beda.software/fhir/Questionnaire/medication-request-edit
