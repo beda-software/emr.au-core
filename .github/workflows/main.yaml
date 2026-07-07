@@ -24,6 +24,15 @@ jobs:
       - run: yarn extract
       - run: yarn compile
       - run: yarn build
+      - name: Build resources bundle
+        run: docker compose run --rm build-resources
+      - name: Upload bundle to FHIR server
+        run: |
+          curl --fail-with-body -X POST \
+            -u "${{ secrets.BASIC_AUTH }}" \
+            -H "Content-Type: application/fhir+json" \
+            -d @bundles/bundle.json \
+            https://aucore.aidbox.beda.software/fhir
       - name: copy file via ssh
         uses: appleboy/scp-action@v0.1.7
         with:
