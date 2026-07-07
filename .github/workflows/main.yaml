@@ -1,5 +1,8 @@
 name: Build and upload static files to the remote server
-on: push
+on:
+  push:
+    branches:
+      - main
 jobs:
   build:
     name: Build
