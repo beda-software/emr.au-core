@@ -26,13 +26,11 @@ jobs:
       - run: yarn build
       - name: Build resources bundle
         run: docker compose run --rm build-resources
-      - name: Upload bundle to FHIR server
-        run: |
-          curl --fail-with-body -X POST \
-            -u "${{ secrets.BASIC_AUTH }}" \
-            -H "Content-Type: application/fhir+json" \
-            -d @bundles/bundle.json \
-            https://aucore.aidbox.beda.software/fhir
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle
+          path: bundles/bundle.json
       - name: copy file via ssh
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -41,3 +39,24 @@ jobs:
           key: ${{ secrets.SSH_KEY}}
           source: build
           target: emr-au-core-static
+  upload-bundle:
+    name: Upload bundle
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fhir_server:
+          - https://aucore.aidbox.beda.software
+          - https://smartonfhir.aidbox.beda.software
+    steps:
+      - name: Download bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bundle
+      - name: Upload bundle to FHIR server
+        run: |
+          curl --fail-with-body -X POST \
+            -u "${{ secrets.BASIC_AUTH }}" \
+            -H "Content-Type: application/fhir+json" \
+            -d @bundle.json \
+            ${{ matrix.fhir_server }}/fhir
