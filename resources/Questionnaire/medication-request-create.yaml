@@ -51,23 +51,7 @@ item:
     type: choice
     linkId: medication
     required: true
-    answerOption:
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "79115011000036100"
-          display: Paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "387517004"
-          display: Paracetamol 500 mg tablet
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "387458008"
-          display: Aspirin 100 mg tablet
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "372756006"
-          display: Simvastatin 20 mg tablet
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/australian-medication-1
   - text: Status
     type: choice
     linkId: status
@@ -85,9 +69,6 @@ item:
           system: http://hl7.org/fhir/CodeSystem/medicationrequest-status
           code: on-hold
           display: On hold
-    initialExpression:
-      language: text/fhirpath
-      expression: "%Questionnaire.repeat(item).where(linkId='status').answerOption.valueCoding.where(code='active')"
   - text: Intent
     type: choice
     linkId: intent
@@ -114,19 +95,7 @@ item:
   - text: Reason
     type: choice
     linkId: reason
-    answerOption:
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "278414003"
-          display: Pain management
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "38341003"
-          display: Hypertension
-      - valueCoding:
-          system: http://snomed.info/sct
-          code: "44054006"
-          display: Diabetes mellitus type 2
+    answerValueSet: https://healthterminologies.gov.au/fhir/ValueSet/reason-for-request-1
   - text: Dosage instruction
     type: string
     linkId: dosage-instruction

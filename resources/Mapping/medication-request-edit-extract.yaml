@@ -4,21 +4,16 @@ type: FHIRPath
 body:
   "{% assign %}":
     - medicationRequestId: "{{ %QuestionnaireResponse.answers('medication-request-id') }}"
-    - patientId: "{{ %QuestionnaireResponse.answers('patient-id') }}"
-    - patientName: "{{ %QuestionnaireResponse.answers('patient-name') }}"
-    - medication: "{{ %QuestionnaireResponse.answers('medication') }}"
     - status: "{{ %QuestionnaireResponse.answers('status').code }}"
     - intent: "{{ %QuestionnaireResponse.answers('intent').code }}"
     - authoredOn: "{{ %QuestionnaireResponse.answers('authored-on') }}"
     - reason: "{{ %QuestionnaireResponse.answers('reason') }}"
     - dosageInstruction: "{{ %QuestionnaireResponse.answers('dosage-instruction') }}"
-    - requester: "{{ %MedicationRequest.requester }}"
-
   resourceType: Bundle
   type: transaction
   entry:
     - request:
-        method: PUT
+        method: PATCH
         url: "/MedicationRequest/{{ %medicationRequestId }}"
       resource:
         resourceType: MedicationRequest
@@ -28,14 +23,7 @@ body:
             - http://hl7.org.au/fhir/core/StructureDefinition/au-core-medicationrequest
         status: "{{ %status }}"
         intent: "{{ %intent }}"
-        medicationCodeableConcept:
-          coding:
-            - "{{ %medication }}"
-        subject:
-          reference: "{{ 'Patient/' + %patientId }}"
-          display: "{{ %patientName }}"
         authoredOn: "{{ %authoredOn }}"
-        requester: "{{ %requester }}"
         reasonCode:
           - "{% if %reason.exists() %}":
               coding:
