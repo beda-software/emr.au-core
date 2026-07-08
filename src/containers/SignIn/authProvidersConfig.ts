@@ -20,7 +20,7 @@ export enum AuthProvider {
     MeditechEU = 'meditech-eu',
     Nuvyta = 'Nuvyta',
     fhirworks = 'fhirworks',
-    mmex = 'mmex'
+    elitemx = 'elitemx'
 }
 
 export interface SharedCredentials {
@@ -344,10 +344,10 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: '1465' },
 
     },
-    [AuthProvider.mmex]: {
+    [AuthProvider.elitemx]: {
         baseUrl: 'https://happy-holmes-senior-intent.trycloudflare.com',
         fhirBaseUrl: 'https://happy-holmes-senior-intent.trycloudflare.com/fhir/R4',
-        client: smartOAuthClientConfig('MMEx', {
+        client: smartOAuthClientConfig('Elite Mx', {
             clientId: 'fhirworks',
             redirectURL: `${window.location.origin}/auth`,
         }),
