@@ -8,8 +8,9 @@ import { WithId } from '@beda.software/fhir-react';
 
 import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
 
+import { Documents } from '.';
+import { EncounterDocuments } from './encounterDocuments';
 import { EncounterOverview } from './EncounterOverview';
-import { Documents } from '.'
 
 const getPatientName = compileAsFirst<Patient | undefined, string>(
     "Patient.name.given.first() + ' ' + Patient.name.family",
@@ -23,12 +24,15 @@ const tabs: Array<Tab<Encounter|Patient>> = [
         component: ({ resource }) => <EncounterOverview encounter={resource as Encounter} />,
     },
     {
-        path: 'documents',
-        label: 'Documents',
+        path: 'forms',
+        label: 'Forms',
         component: ({ bundle }) => <Documents patient={getPatient(bundle)!} />,
     },
-
-
+    {
+        path: 'documents',
+        label: 'Attachments',
+        component: ({ resource }) => <EncounterDocuments encounter={resource as Encounter} />,
+    },
 ];
 
 if (config.baseURL === authProvidersConfig[AuthProvider.SmartOnFhirAidbox].baseUrl) {
