@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { getToken } from '@beda.software/emr/services';
+import { axiosInstance, getToken } from '@beda.software/emr/services';
 
 import { clientSharedUserInitService } from 'src/populateUserInfoSharedState';
-import { AuthProvider, getAuthProviderFromStorage } from 'src/services/auth';
+import { AuthProvider, authProvidersConfig, getAuthProviderFromStorage } from 'src/services/auth';
 
 
 export function useApp() {
@@ -14,6 +14,17 @@ export function useApp() {
     );
 
     useEffect(() => {
+        if (authProvider) {
+            const provider = authProvidersConfig[authProvider];
+            if (provider.client.headers){
+                const defaultHeaders = axiosInstance.defaults.headers;
+                axiosInstance.defaults.headers = {
+                    ...defaultHeaders,
+                    ...provider.client.headers,
+                }
+            }
+        }
+
         const authProviderHeader = document.getElementById('auth-provider-info');
         if (authProviderHeader) {
             const token = getToken();

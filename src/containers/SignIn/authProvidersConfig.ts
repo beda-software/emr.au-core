@@ -256,11 +256,14 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         userInit: { type: 'mock', practitionerId: 'leishman-leesa' },
     },
     [AuthProvider.DigitalHealth]: {
-        baseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-        fhirBaseUrl: 'https://fhir-xrp.digitalhealth.gov.au/fhir/',
-        client: smartOAuthClientConfig('Digital Health', {
+        baseUrl: 'https://sit.healthconnect.digitalhealth.gov.au/adha/hcd-api-router/api/v1/fhir/',
+        fhirBaseUrl: 'https://sit.healthconnect.digitalhealth.gov.au/adha/hcd-api-router/api/v1/fhir/',
+        client: smartOAuthClientConfig('Health Connect', {
             clientId: 'digital-health',
             redirectURL: `${window.location.origin}/auth`,
+            headers: {
+                'X-Request-ID': '75d4eef6-060a-4385-8ebf-c9e27b08db3c'
+            },
         }),
         signIn: { type: 'mock-token', token: 'token', redirectPath: '/practitioners' },
         userInit: { type: 'mock', practitionerId: 'example-healthconnect-practitioner-1' },
