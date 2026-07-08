@@ -2,9 +2,8 @@ import { t, Trans } from '@lingui/macro';
 import { Bundle, MedicationRequest, Patient } from 'fhir/r4b';
 
 import { ResourceListPageContent } from '@beda.software/emr/dist/uberComponents/ResourceListPageContent/index';
-import { formatHumanDate } from '@beda.software/emr/dist/utils/index';
+import { compileAsArray, formatHumanDate } from '@beda.software/emr/dist/utils/index';
 import { matchCurrentUserRole, Role } from '@beda.software/emr/dist/utils/role';
-import { compileAsArray } from '@beda.software/emr/dist/utils/index';
 import { questionnaireAction } from '@beda.software/emr/uberComponents';
 
 import { getMedicationDisplay, getRequesterDisplay } from './medicationRequests';
@@ -37,7 +36,7 @@ export function PatientMedicationDispense({ patient }: { patient: Patient }) {
             searchParams={{
                 patient: patient.id!,
                 _revinclude: 'MedicationDispense:prescription',
-                _include: 'MedicationRequest:requester',
+                _include: ['MedicationRequest:requester', 'MedicationRequest:medication:Medication'],
                 _sort: '-authoredon',
             }}
             extractPrimaryResources={extractUndispensedMedicationRequests}
@@ -45,7 +44,7 @@ export function PatientMedicationDispense({ patient }: { patient: Patient }) {
                 {
                     title: t`Medication`,
                     key: 'medication',
-                    render: (_text: any, { resource }) => getMedicationDisplay(resource),
+                    render: (_text: any, { resource, bundle }) => getMedicationDisplay(resource, bundle),
                 },
                 {
                     title: t`Status`,

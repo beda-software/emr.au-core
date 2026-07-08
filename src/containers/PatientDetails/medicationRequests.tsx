@@ -1,15 +1,15 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { t, Trans } from '@lingui/macro';
-import { Bundle, HumanName, MedicationRequest, Patient } from 'fhir/r4b';
+import { Bundle, HumanName, Medication, MedicationRequest, Patient } from 'fhir/r4b';
 
 import { SearchBarColumnType } from '@beda.software/emr/dist/components/SearchBar/types';
 import { ResourceListPageContent } from '@beda.software/emr/dist/uberComponents/ResourceListPageContent/index';
 import { compileAsFirst, formatHumanDate, renderHumanName } from '@beda.software/emr/dist/utils/index';
 import { matchCurrentUserRole, Role } from '@beda.software/emr/dist/utils/role';
 import { questionnaireAction } from '@beda.software/emr/uberComponents';
+import config from '@beda.software/emr-config';
 
 import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
-import config from '@beda.software/emr-config';
 
 const MEDICATIONREQUEST_STATUS_SYSTEM = 'http://hl7.org/fhir/CodeSystem/medicationrequest-status';
 
@@ -24,6 +24,12 @@ const findPractitionerNameById = compileAsFirst<Bundle, HumanName>(
 );
 const findOrganizationNameById = compileAsFirst<Bundle, string>(
     "Bundle.entry.resource.where(resourceType='Organization' and id=%id).first().name",
+);
+const getMedicationReferenceId = compileAsFirst<MedicationRequest, string>(
+    "MedicationRequest.medicationReference.reference.split('/').last()",
+);
+const findMedicationById = compileAsFirst<Bundle, Medication>(
+    "Bundle.entry.resource.where(resourceType='Medication' and id=%id).first()",
 );
 
 export function getRequesterDisplay(resource: MedicationRequest, bundle: Bundle): string {
@@ -47,12 +53,17 @@ export function getRequesterDisplay(resource: MedicationRequest, bundle: Bundle)
     return 'N/A';
 }
 
-export function getMedicationDisplay(resource: MedicationRequest): string {
+export function getMedicationDisplay(resource: MedicationRequest, bundle: Bundle): string {
     if (resource.medicationCodeableConcept) {
         return resource.medicationCodeableConcept.coding?.[0]?.display ?? resource.medicationCodeableConcept.text ?? 'N/A';
     }
     if (resource.medicationReference) {
-        return resource.medicationReference.display ?? 'N/A';
+        if (resource.medicationReference.display) {
+            return resource.medicationReference.display;
+        }
+        const id = getMedicationReferenceId(resource);
+        const medication = id ? findMedicationById(bundle, { id }) : undefined;
+        return medication?.code?.coding?.[0]?.display ?? medication?.code?.text ?? 'N/A';
     }
     return 'N/A';
 }
@@ -77,14 +88,14 @@ export function PatientMedicationRequest({ patient }: { patient: Patient }) {
             resourceType="MedicationRequest"
             searchParams={{
                 patient: patient.id!,
-                _include: 'MedicationRequest:requester',
+                _include: ['MedicationRequest:requester', 'MedicationRequest:medication:Medication'],
                 _sort: '-authoredon',
             }}
             getTableColumns={() => [
                 {
                     title: t`Medication`,
                     key: 'medication',
-                    render: (_text: any, { resource }) => getMedicationDisplay(resource),
+                    render: (_text: any, { resource, bundle }) => getMedicationDisplay(resource, bundle),
                 },
                 {
                     title: t`Status`,
