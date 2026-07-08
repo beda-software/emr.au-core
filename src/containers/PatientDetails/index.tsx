@@ -71,6 +71,7 @@ if (
     [
         authProvidersConfig[AuthProvider.AuCoreAidbox].baseUrl,
         authProvidersConfig[AuthProvider.SmartOnFhirAidbox].baseUrl,
+        authProvidersConfig[AuthProvider.fhirworks].baseUrl,
     ].includes(config.baseURL)
 ) {
     tabs.push({

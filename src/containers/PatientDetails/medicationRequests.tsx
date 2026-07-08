@@ -8,6 +8,9 @@ import { compileAsFirst, formatHumanDate, renderHumanName } from '@beda.software
 import { matchCurrentUserRole, Role } from '@beda.software/emr/dist/utils/role';
 import { questionnaireAction } from '@beda.software/emr/uberComponents';
 
+import { AuthProvider, authProvidersConfig } from 'src/services/auth.ts';
+import config from '@beda.software/emr-config';
+
 const MEDICATIONREQUEST_STATUS_SYSTEM = 'http://hl7.org/fhir/CodeSystem/medicationrequest-status';
 
 const getRequesterId = compileAsFirst<MedicationRequest, string>(
@@ -59,11 +62,13 @@ function getReasonDisplay(resource: MedicationRequest): string {
     return reason?.coding?.[0]?.display ?? reason?.text ?? 'N/A';
 }
 
+const isFhirWorks = authProvidersConfig[AuthProvider.fhirworks].baseUrl == config.baseURL;
+
 export function PatientMedicationRequest({ patient }: { patient: Patient }) {
     const canManage = matchCurrentUserRole({
         [Role.Admin]: () => true,
         [Role.Patient]: () => false,
-        [Role.Practitioner]: () => true,
+        [Role.Practitioner]: () => !isFhirWorks,
         [Role.Receptionist]: () => true,
     });
 

@@ -19,6 +19,7 @@ export enum AuthProvider {
     EpicEU = 'epic-eu',
     MeditechEU = 'meditech-eu',
     Nuvyta = 'Nuvyta',
+    fhirworks = 'fhirworks'
 }
 
 export interface SharedCredentials {
@@ -331,4 +332,16 @@ export const authProvidersConfig: { [key in AuthProvider]: AuthProviderConfig } 
         signIn: { type: 'presaved-token' },
         userInit: { type: 'mock', practitionerId: 'nuvyta' },
     },
+    [AuthProvider.fhirworks]: {
+        baseUrl: 'https://api.fhirworks.com.au/',
+        fhirBaseUrl: 'https://api.fhirworks.com.au/fhir',
+        client: smartOAuthClientConfig('Fhir works', {
+            clientId: 'fhirworks',
+            redirectURL: `${window.location.origin}/auth`,
+        }),
+        signIn: { type: 'mock-token', token: 'token', redirectPath: '/patients' },
+        userInit: { type: 'mock', practitionerId: '1465' },
+
+    },
+
 };
